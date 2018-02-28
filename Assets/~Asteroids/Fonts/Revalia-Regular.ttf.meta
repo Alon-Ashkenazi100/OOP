@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 02634ece9fba8ad448a2a0e4193e8107
+timeCreated: 1499944878
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Revalia
+  fontNames:
+  - Revalia
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
