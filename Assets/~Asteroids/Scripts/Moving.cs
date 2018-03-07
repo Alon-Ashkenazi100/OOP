@@ -6,12 +6,15 @@ namespace Asteroids
 {
     public class Moving : MonoBehaviour
     {
+        #region Variables
         public float acceleration = 5f;
         public float rotationSpeed = 5f;
         public float maxVelocity = 3f;
 
         private Rigidbody2D rigid;
+        #endregion
 
+        #region Methods/Functions
         // Use this for initialization
         void Start()
         {
@@ -48,5 +51,17 @@ namespace Asteroids
         {
             rigid.rotation -= angleOffset * rotationSpeed * Time.deltaTime;
         }
+
+        // Rotates the player left
+        public void RotateLeft()
+        {
+            rigid.rotation += rotationSpeed * Time.deltaTime;
+        }
+        // Rotates the player right
+        public void RotateRight()
+        {
+            rigid.rotation -= rotationSpeed * Time.deltaTime;
+        }
+        #endregion
     }
 }

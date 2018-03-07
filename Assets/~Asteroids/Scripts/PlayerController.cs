@@ -13,16 +13,29 @@ namespace Asteroids
         {
             float inputV = Input.GetAxis("Vertical");
             float inputH = Input.GetAxis("Horizontal");
+
             // Check if up arrow is pressed
             if (inputV > 0)
             {
                 // Accelerate player
                 movement.Accelerate(transform.up);
-
             }
-            // Check if horizontal axis (left or right arrow) is pressed
-            // Rotate in correct direction
-            movement.Rotate(inputH);
+            //// Rotate depending on what inputH direction is
+            //movement.Rotate(inputH);
+
+            // If right arrow is pressed
+            // Rotate right
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                movement.RotateRight();
+            }
+
+            // If left arrow is pressed
+            // Rotate left
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                movement.RotateLeft();
+            }
         }
     }
 }
