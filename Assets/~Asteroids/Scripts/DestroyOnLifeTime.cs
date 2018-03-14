@@ -5,19 +5,13 @@ using UnityEngine;
 namespace Asteroids
 {
 
-    public class Bullet : MonoBehaviour
+    public class DestroyOnLifeTime : MonoBehaviour
     {
-
+        public float lifeTime = 5f;
         // Use this for initialization
         void Start()
         {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            Destroy(gameObject, lifeTime);
         }
 
     }
