@@ -7,18 +7,18 @@ namespace Asteroids
 
     public class Bullet : MonoBehaviour
     {
-
-        // Use this for initialization
-        void Start()
+        void OnTriggerEnter2D(Collider2D col)
         {
+            
+            // If we hit an asteroid
+            if (col.name.Contains("Asteroid"))
+            {
 
+                // Destroy the asteroid
+                Destroy(col.gameObject);
+                //
+                Destroy(this.gameObject);
+            }
         }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
     }
 }
