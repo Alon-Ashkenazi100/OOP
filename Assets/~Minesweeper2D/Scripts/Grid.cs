@@ -12,16 +12,48 @@ namespace Minesweeper2D
         public float spacing = .1555f;
 
         private Tile[,] tiles;
-        // Functionality for spawning tiles
-        Tile SpawnTile(Vector3 pos)
-        {
-            // Clone tile prefab
-            GameObject clone = Instantiate(tilePrefab);
-            clone.transform.position = pos; // position tile
-            Tile currentTile = clone.GetComponent<Tile>(); // Get Tile component
-            return currentTile; //return it
-        }
 
+        #region Unity Functions
+        // Use this for initialization
+        void Start()
+        {
+
+            // Generate tiles on startup
+            GenerateTiles();
+        }
+        // Update is called once per frame
+        void Update()
+        {
+            // LET mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition)
+            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            // LET hit = Physics2D.Raycast(mouseRay.origin, mouseRay.direction)
+            RaycastHit2D hit = Physics2D.Raycast(mouseRay.origin, mouseRay.direction);
+
+            // IF hit.collider != null
+            if (hit.collider != null)
+            {
+                // <datatype> <variablename> ;
+                // LET hitTile = hit.collider.GetComponent<Tile>()
+                Tile hitTile = hit.collider.GetComponent<Tile>();
+
+                // IF hitTile != null
+                if (hitTile != null)
+                {
+                    // LET adjacent Mines = GetAdjacentMineCountAt(hitTile)
+                    int adjacentMines = GetAdjacentMineCount(hitTile);
+
+                    // CALL hitTile.Reveal(adjacentMines)
+                    hitTile.Reveal(adjacentMines);
+                }
+
+
+            }
+
+        }
+        #endregion
+
+        #region Custom Functions
         // Spawns tiles in a grid-like pattern
         void GenerateTiles()
         {
@@ -33,10 +65,68 @@ namespace Minesweeper2D
             {
                 for (int y = 0; y < height; y++)
                 {
-                    // >> Part 2 goes here <<
+                    // Store half size for later use
+                    Vector2 halfSize = new Vector2(width / 2, height / 2);
+
+                    // Pivot tiles around Grid
+                    Vector2 pos = new Vector2(x - halfSize.x,
+                                              y - halfSize.y);
+                    pos.x += .5f;
+                    pos.y += .5f;
+
+                    // Apply spacing
+                    pos *= spacing;
+
+                    // Spawn the tile
+                    Tile tile = SpawnTile(pos);
+                    // Attach newly spawned tile to
+                    tile.transform.SetParent(transform);
+                    // Store it's array coordinates within itself for future reference
+                    tile.x = x;
+                    tile.y = y;
+                    // Store tile in array at those coordinates
+                    tiles[x, y] = tile;
+
                 }
             }
         }
+        // Functionality for spawning tiles
+        Tile SpawnTile(Vector3 pos)
+        {
+            // Clone tile prefab
+            GameObject clone = Instantiate(tilePrefab);
+            clone.transform.position = pos; // position tile
+            Tile currentTile = clone.GetComponent<Tile>(); // Get Tile component
+            return currentTile; //return it
+        }
+        #endregion
+
+        public int GetAdjacentMineCount(Tile tile)
+        {
+            // Set count to 0
+            int count = 0;
+            // Loop through all adjacent tiles on the X
+            for (int x = -1; x <= 1; x++)
+            {
+                // Loop through all adjacent tiles on the Y
+                for (int y = -1; y <= 1; y++)
+                {
+                    // Calculate which adjacent tile to look at
+                    int desiredX = tile.x + x;
+                    int desiredY = tile.y + y;
+                    // Select current tile
+                    Tile currentTile = tiles[desiredX, desiredY];
+                    // Checdk if that tile is a mine
+                    if(currentTile.isMine)
+                    {
+                        // Increment count by 1
+                        count++;
+                    }
+                }
+            }
+
+            // Remember to return the count!
+            return count;
+        }
     }
 }
-        
