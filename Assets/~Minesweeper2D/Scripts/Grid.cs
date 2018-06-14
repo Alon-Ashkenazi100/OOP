@@ -14,10 +14,10 @@ namespace Minesweeper2D
         private Tile[,] tiles;
 
         #region Unity Functions
+
         // Use this for initialization
         void Start()
         {
-
             // Generate tiles on startup
             GenerateTiles();
         }
@@ -46,10 +46,38 @@ namespace Minesweeper2D
                     // CALL hitTile.Reveal(adjacentMines)
                     hitTile.Reveal(adjacentMines);
                 }
-
-
+                {
+                    // Check if Mouse Button is pressed
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        // Run the method for selecting tiles
+                        SelectATile();
+                    }
+                }
             }
+        }
 
+        void SelectATile()
+        {
+            // Generate a ray from the camera with mouse position
+            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            // Perform raycast
+            RaycastHit2D hit = Physics2D.Raycast(mouseRay.origin, mouseRay.direction);
+
+            // If the mouse hit something
+            if (hit.collider != null)
+            {
+                // Try getting a Tile component from the thing we hit
+                Tile hitTile = hit.collider.GetComponent<Tile>();
+                // Check if the thimg it hit was a Tile
+                if (hitTile != null)
+                {
+                    // Get a count of all mines around the hit tile
+                    int adjacentMines = GetAdjacentMineCount(hitTile);
+                    // Reveal what that hit tile is
+                    hitTile.Reveal(adjacentMines);
+                }
+            }
         }
         #endregion
 
@@ -124,7 +152,7 @@ namespace Minesweeper2D
                     }
                 }
             }
-
+ 
             // Remember to return the count!
             return count;
         }
